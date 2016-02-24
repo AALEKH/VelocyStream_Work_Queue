@@ -8,12 +8,29 @@
 #include <arpa/inet.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <velocypack/vpack.h>
 
 using namespace std;
+using namespace arangodb::velocypack;
+
  
 int main(int argc,char **argv)
 {
     int sockfd, n;
+    size_t len;
+    // Builder *b;
+    map<string,int> ount;
+    // ount["12345"] = 5;
+    // b.add("12345", Value(5));
+    // b->(Value(ValueType::Object));
+    // b->add("foo", Value(42)); 
+    // b->close();
+    // b.close();
+    Builder builder;
+    builder.isOpenObject();
+    builder.add("id", Value(23));
+    builder.close();
+    //b.add(Value("this is a test"));
     int messageCount[2];
     messageCount[0] = 12345;
     messageCount[1] = 5;
@@ -42,7 +59,9 @@ int main(int argc,char **argv)
         if(atoi(sendline) ==123){
         // if((sendline[0] == 'h')&&(sendline[1] == 'o')){
             cout << "Yes I  have reached here" << endl;
-            write(sockfd, messageCount, sizeof(messageCount));
+            // Slice s(b.start());
+            // len = s.byteSize();
+            write(sockfd, &builder, 100);
         }else{
             continue;
         }
