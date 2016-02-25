@@ -1,29 +1,30 @@
-/*Required Headers*/
- 
-// #include <sys/types.h>
-// #include <sys/socket.h>
-// #include <netdb.h>
-// #include <stdio.h>
-// #include <string.h>
-#include <map>
 #include <stdio.h>
-#include <vector>
+#include <map>
+#include <string>
 #include "iostream"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h> 
+#include <sys/types.h>
+#include <arpa/inet.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <velocypack/vpack.h>
 
 using namespace std;
+using namespace arangodb::velocypack;
 
 int main()
 {
     map<uint32_t,int> messageCount;
+    Options dumperOptions;
+    dumperOptions.prettyPrint = true;
+    std::string result;
+    StringSink sink(&result);
+    Dumper dumper(&sink, &dumperOptions);
+    map<uint32_t, vector<string>> messages;
     int count[2];
-    //count[12345] = 5;
-    map<uint32_t, vector<string> > vpackMap;
+    Builder builder;
     char str[100], str2[4];
     int listen_fd, comm_fd;
  
@@ -45,25 +46,11 @@ int main()
  
     while(1)
     {
- 
- //       bzero( str, 100);
- 
-        read(comm_fd, count, sizeof(count));
-        cout << "The size of recieved messageCOunt is: " << sizeof(count) << endl;
-        //cout << "Echoing back - " << str << "size" << (unsigned)strlen(str)<<  " 0: "<< str[0]<< " 1: " << str[1] << endl;
-        //if((str[0] == 'h') &&(str[1] == 'e')){
-        //    str2[0] = 't';
-        //    str2[1] = 'o'; 
-        //    str2[2] = 't';
-        //    str2[3] = 'o';;
-        //    write(comm_fd, str2, strlen(str2));
-        // }//else{
-        //     write(comm_fd, str, strlen(str)); 
-        // }
-        //else{
-        //     str = "hello-stranger, no access";
-        //     write(comm_fd, str, strlen(str)+1);
-        // }
+        read(comm_fd, &builder, 100);
+        Slice s(builder.start());
+        dumper.dump(s);
+        std::cout << "Resulting JSON:" << std::endl << result << std::endl;
+         // cout << "The size of recieved messageCOunt is: " << sizeof(count) << endl;
  
     }
 }
