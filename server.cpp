@@ -1,0 +1,43 @@
+/*Required Headers*/
+ 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string>
+ 
+#define ARRAY_LEN 2
+
+using namespace std;
+
+int main()
+{
+ 
+    char str[100];
+    int listen_fd, comm_fd, rea;
+    string targetArray[ARRAY_LEN];
+    struct sockaddr_in servaddr;
+ 
+    listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+ 
+    bzero( &servaddr, sizeof(servaddr));
+ 
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
+    servaddr.sin_port = htons(22000);
+ 
+    bind(listen_fd, (struct sockaddr *) &servaddr, sizeof(servaddr));
+ 
+    listen(listen_fd, 10);
+ 
+    comm_fd = accept(listen_fd, (struct sockaddr*) NULL, NULL);
+    while(1){
+        rea = read(comm_fd, targetArray, sizeof(string) * ARRAY_LEN);
+        if(!(rea < 1)) {
+            printf("%s\n", targetArray[0].c_str());
+            printf("%s\n", targetArray[1].c_str());
+            break;
+        }
+    }
+}

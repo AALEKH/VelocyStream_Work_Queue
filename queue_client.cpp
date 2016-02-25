@@ -21,6 +21,10 @@ int main(int argc,char **argv)
     size_t len;
     map<string,int> ount;
     Builder builder;
+    // builder.add("l", Value(ValueType::Array));
+    // builder.add(Value("abc"));
+    // builder.add(Value("def"));
+    // builder.add(Value("ghi"));
     char sendline[100];
     char recvline[100];
     struct sockaddr_in servaddr;
@@ -43,9 +47,12 @@ int main(int argc,char **argv)
         builder.add(Value("abc"));
         builder.add(Value("def"));
         builder.add(Value("ghi"));
+        builder.close();
          if(atoi(sendline) ==123){
-            cout << "Yes I  have reached here" << endl;
+            // cout << "Yes I  have reached here" << endl;
+            printf("Yes I  have reached here");
             write(sockfd, &builder, 100);
+            continue;
         }else{
             continue;
         }
