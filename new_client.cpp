@@ -36,6 +36,7 @@ arangodb::velocypack::Builder build_two;
 ValueLength len;
 int count = 0;
 velocystream velocy_one, velocy_two;
+velocystream *srt_lt = (velocystream *)malloc(2000);
 struct sockaddr_in addr;
 int addr_len = sizeof(addr);
 char buffer[BUFFER_SIZE] = "";
@@ -66,19 +67,12 @@ while (strcmp(buffer, "q") != 0)
   gets(buffer);
   count++;
   sendBuffer = constructVstream(buffer, count);
-  // build.add(Value(buffer));
 
   send(sd, sendBuffer, sizeof(sendBuffer), 0);
-  // Receive message from the server
-  // printf("String sent !!!!!");
-  // recv(sd, &build_two, 1000, 0);
   printf("message:%s\n", sendBuffer);
   recv(sd, buffer, 2000, 0);
-  // Slice s(build.start());  
-  printf("Size of Send Buffer %lu\n", sizeof(sendBuffer));
-  // printf("message: %s\n", s.copyString().c_str());
-  // Slice s(build.start());
-  // printf("vpack is: %s", s.copyString().c_str());
+  memcpy(srt_lt, buffer, 2000);
+  printf("Size of Send Buffer %llu\n", srt_lt->messageId);
 }
 
 return 0;
