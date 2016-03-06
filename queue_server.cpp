@@ -51,22 +51,16 @@ int main()
     while(1)
     {
         // cout << "e" << endl;
-        read(comm_fd, &builder, 100);
+        int re = read(comm_fd, &builder, 100);
         // cout << "read" << endl;
-        Slice s(builder.start());
-        // cout << s.type() << endl;
-        if(s.type() != ValueType::None){
-            printf("Type %s", s.type());
+        if(re > 1){
+            Slice s(builder.start());
             // cout << s.type() << endl;
-            // cout << "recieved" << endl;
-        }else{
-            // cout << "break" << endl;
-            break;
+            // if(s.type() != ValueType::None){
+            printf("Type %s", s.type());
+            // }else{
+                // break;
+            // }
         }
-        // Slice s(builder.start());
-        // dumper.dump(s);
-        // std::cout << "Resulting JSON:" << std::endl << result << std::endl;
-        // cout << "The size of recieved messageCOunt is: " << sizeof(result) << endl;
- 
     }
 }

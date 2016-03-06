@@ -14,7 +14,10 @@
 using namespace std;
 using namespace arangodb::velocypack;
 
- 
+void buil(Builder *bu){
+    // Does nothing !!!!!!
+} 
+
 int main(int argc,char **argv)
 {
     int sockfd, n;
@@ -48,6 +51,7 @@ int main(int argc,char **argv)
         builder.add(Value("def"));
         builder.add(Value("ghi"));
         builder.close();
+        // buil(&builder);
          if(atoi(sendline) ==123){
             // cout << "Yes I  have reached here" << endl;
             printf("Yes I  have reached here");
